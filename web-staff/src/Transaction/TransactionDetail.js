@@ -2,12 +2,15 @@ import React, { Component } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import "../Transaction/TransactionDetail.css";
+import ShipperInfo from "../ShipperInfo/ShipperInfo";
+import swal from "sweetalert";
 export default class TransactionDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
       detail: {},
     };
+    this.cancelTransaction = this.cancelTransaction.bind(this);
   }
   componentDidMount() {
     const { id } = this.props.match.params;
@@ -18,6 +21,24 @@ export default class TransactionDetail extends Component {
         this.setState({ detail: response.data });
       });
   }
+  cancelTransaction = () => {
+    swal({
+      title: "Are you sure?",
+      text:
+        "Once deleted, you will not be able to recover this imaginary file!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        swal("Poof! Your imaginary file has been deleted!", {
+          icon: "success",
+        });
+      } else {
+        swal("Your imaginary file is safe!");
+      }
+    });
+  };
 
   render() {
     return (
@@ -40,6 +61,7 @@ export default class TransactionDetail extends Component {
             <h1 style={{ flexGrow: 2 }}>TRANSACTIONS DETAIL</h1>
             <div style={{ flexGrow: 1 }}>
               <button
+                onClick={this.cancelTransaction}
                 style={{ margin: 20 }}
                 type="submit"
                 className="btn btn-danger"
@@ -58,33 +80,89 @@ export default class TransactionDetail extends Component {
 
           <br />
 
-          <div className="form-group row">
-            <label htmlFor="inputEmail3" className="col-sm-2 col-form-label">
-              Order Status
-            </label>
-            <div className="col-sm-10">
+          <div className="form-row">
+            <div className="form-group col-md-2">
+              <label htmlFor="inputEmail4">Order Status</label>
               <div style={{ display: "flex", alignItems: "center" }}>
                 <span className="dot"></span>
                 <div>Delivering</div>
               </div>
             </div>
-          </div>
-
-          <div className="form-row">
-            <div className="form-group col-md-6">
-              <label htmlFor="inputEmail4">Order ID</label>
+            <div className="form-group col-md-2">
+              <label htmlFor="inputPassword4">Order ID</label>
               <input
-              value={this.state.detail.id}
+                value={this.state.detail.phone}
+                type="text"
+                className="form-control"
+                id="inputPassword4"
+                placeholder="Password"
+              />
+            </div>
+            <div className="form-group col-md-2">
+              <label htmlFor="inputPassword4">Total Cost</label>
+              <input
+                value={this.state.detail.phone}
+                type="text"
+                className="form-control"
+                id="inputPassword4"
+                placeholder="Password"
+              />
+            </div>
+            <div className="form-group col-md-2">
+              <label htmlFor="inputEmail4">Ship Cost</label>
+              <input
+                value={this.state.detail.email}
                 type="email"
                 className="form-control"
                 id="inputEmail4"
                 placeholder="Email"
               />
             </div>
-            <div className="form-group col-md-6">
-              <label htmlFor="inputPassword4">Total Cost</label>
+            <div className="form-group col-md-2">
+              <label htmlFor="inputPassword4">Shopping Fees</label>
               <input
-               value={this.state.detail.phone}
+                value={this.state.detail.phone}
+                className="form-control"
+                id="inputPassword4"
+                placeholder="Password"
+              />
+            </div>
+            <div className="form-group col-md-2">
+              <label htmlFor="inputEmail4">Refund</label>
+              <input
+                value={this.state.detail.email}
+                type="email"
+                className="form-control"
+                id="inputEmail4"
+                placeholder="Email"
+              />
+            </div>
+          </div>
+
+          <div className="form-row">
+            <div className="form-group col-md-4">
+              <label htmlFor="inputCity">Customer name :</label>
+              <input
+                value={this.state.detail.name}
+                type="text"
+                className="form-control"
+                id="inputCity"
+              />
+            </div>
+            <div className="form-group col-md-4">
+              <label htmlFor="inputPassword4">Customer phone number</label>
+              <input
+                value={this.state.detail.phone}
+                type="text"
+                className="form-control"
+                id="inputPassword4"
+                placeholder="Password"
+              />
+            </div>
+            <div className="form-group col-md-4">
+              <label htmlFor="inputPassword4">Customer email</label>
+              <input
+                value={this.state.detail.email}
                 type="text"
                 className="form-control"
                 id="inputPassword4"
@@ -94,37 +172,57 @@ export default class TransactionDetail extends Component {
           </div>
           <div className="form-row">
             <div className="form-group col-md-6">
-              <label htmlFor="inputEmail4">Ship Cost</label>
+              <label htmlFor="inputCity">Delivery Address :</label>
               <input
-               value={this.state.detail.email}
-                type="email"
+                value={this.state.detail.phone}
+                type="text"
                 className="form-control"
-                id="inputEmail4"
-                placeholder="Email"
+                id="inputCity"
               />
             </div>
             <div className="form-group col-md-6">
-              <label htmlFor="inputPassword4">Shopping Fees</label>
+              <label htmlFor="inputState">Supermarket Address :</label>
               <input
                 value={this.state.detail.phone}
+                type="text"
                 className="form-control"
-                id="inputPassword4"
-                placeholder="Password"
+                id="inputCity"
               />
             </div>
           </div>
           <div className="form-row">
-            <div className="form-group col-md-6">
-              <label htmlFor="inputCity">Refund</label>
-              <input value={this.state.detail.phone} type="text" className="form-control" id="inputCity" />
-            </div>
-            <div className="form-group col-md-6">
-              <label htmlFor="inputState">Shipper deliver:</label>
-              <input value={this.state.detail.name} type="text" className="form-control" id="inputCity" />
-            </div>
-            
+            <div className="form-group col-md-6"></div>
+            <div className="form-group col-md-6"></div>
           </div>
-          
+
+          <div className="form-row">
+            <div className="form-group col-md-6"></div>
+          </div>
+
+          <div className="form-row">
+            <div className="form-group col-md-4">
+              <label htmlFor="inputCity">Shipper Delivering :</label>
+              <ShipperInfo
+                name={"Hoang Hiep"}
+                phone={"91029102"}
+                time={"12120-q12121"}
+              />
+            </div>
+            <div className="form-group col-md-4">
+              <label htmlFor="inputState">Handed over from : :</label>
+              <ShipperInfo
+                name={"Hoang Hiep"}
+                phone={"91029102"}
+                time={"12120-q12121"}
+              />
+            </div>
+            <div className="form-group col-md-4">
+              <label htmlFor="inputState">
+                Customer verify when deliver success :
+              </label>
+              <img src="https://via.placeholder.com/150C" alt="verify" />
+            </div>
+          </div>
 
           <br />
         </div>
