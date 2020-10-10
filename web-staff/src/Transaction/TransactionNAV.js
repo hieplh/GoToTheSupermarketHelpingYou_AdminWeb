@@ -54,9 +54,13 @@ export default class TransactionNAV extends Component {
       <>
         <div style={{ marginLeft: 40, marginTop: 20, width: "95%" }}>
           <div style={{ display: "flex", flexDirection: "row-reverse" }}>
-            <form >
-              <input style={{width:400}} type="text" placeholder="Order Id, customer or shipper name,phone "/>
-              <input type="submit" value="Search"  />
+            <form>
+              <input
+                style={{ width: 400 }}
+                type="text"
+                placeholder="Order Id, customer or shipper name,phone "
+              />
+              <input type="submit" value="Search" />
             </form>
           </div>
           <Tabs defaultIndex={0}>
@@ -87,7 +91,26 @@ export default class TransactionNAV extends Component {
             </TabPanel>
             <TabPanel></TabPanel>
             <TabPanel></TabPanel>
-            <TabPanel></TabPanel>
+            <TabPanel>
+              <div>
+                <Tabs>
+                  <TabList>
+                    <Tab>Customer Cancel</Tab>
+                    <Tab>Shipper Cancel</Tab>
+                  </TabList>
+                  <TabPanel>
+                    <div style={{ marginTop: 10 }}>
+                      <Table data={this.state.complete} />
+                    </div>
+                  </TabPanel>
+                  <TabPanel>
+                    <div style={{ marginTop: 10 }}>
+                      <Table data={this.state.uncomplete} />
+                    </div>
+                  </TabPanel>
+                </Tabs>
+              </div>
+            </TabPanel>
             <TabPanel></TabPanel>
           </Tabs>
         </div>

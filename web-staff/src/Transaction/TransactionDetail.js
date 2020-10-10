@@ -3,7 +3,9 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import "../Transaction/TransactionDetail.css";
 import ShipperInfo from "../ShipperInfo/ShipperInfo";
+import ModalChangeShipper from "../Modal/Modal";
 import swal from "sweetalert";
+
 export default class TransactionDetail extends Component {
   constructor(props) {
     super(props);
@@ -68,13 +70,7 @@ export default class TransactionDetail extends Component {
               >
                 Cancel
               </button>
-              <button
-                style={{ margin: 20 }}
-                type="submit"
-                className="btn btn-warning"
-              >
-                Change Shipper
-              </button>
+              <ModalChangeShipper />
             </div>
           </div>
 
@@ -223,6 +219,7 @@ export default class TransactionDetail extends Component {
               <img src="https://via.placeholder.com/150C" alt="verify" />
             </div>
           </div>
+         
 
           <br />
         </div>
