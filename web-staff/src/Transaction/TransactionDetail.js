@@ -70,7 +70,7 @@ export default class TransactionDetail extends Component {
               >
                 Cancel
               </button>
-              <ModalChangeShipper />
+              <ModalChangeShipper address={this.state.detail.address ? this.state.detail.address.street : ''} />
             </div>
           </div>
 

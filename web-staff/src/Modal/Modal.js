@@ -1,12 +1,30 @@
 import { Modal, Button } from "react-bootstrap";
+import axios from "axios";
+import React, { useState } from "react";
 
-import React, { Component, useState } from "react";
 
-function ModalChangeShipper() {
+
+const  ModalChangeShipper = ({address}) => {
   const [show, setShow] = useState(false);
+  const [shipperList,setShipperList] = useState([])
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+ 
+  
+
+  function getLocation() {
+    navigator.geolocation.getCurrentPosition(function(location) {
+      console.log(location.coords.latitude, location.coords.longitude)
+      axios.get('https://jsonplaceholder.typicode.com/users').then((response) => {
+        setShipperList(response.data);
+      })
+    });
+  }
+  
+  
+  
 
   return (
     <>
@@ -19,22 +37,24 @@ function ModalChangeShipper() {
           <Modal.Title>Change Shipper</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <div>
+
+         <label>Location of current shipper</label>
+          <div id="shipper">
             <input
               style={{ width: 400 }}
               type="text"
-              placeholder="Location"
+              value={address}
+              disabled
             />
-            <input type="submit" value="Find" />
+            <input type="submit" value="Find" onClick={getLocation} />
           </div>
             <br></br>
 
           <h3>Shipper available </h3>
           <select name="cars" id="cars">
-            <option value="volvo">Volvo</option>
-            <option value="saab">Saab</option>
-            <option value="mercedes">Mercedes</option>
-            <option value="audi">Audi</option>
+           {shipperList.map((shipper, index) =>(
+             <option key={index} value={shipper.id}>{shipper.name}</option>
+           ))}
           </select>
         </Modal.Body>
         <Modal.Footer>
