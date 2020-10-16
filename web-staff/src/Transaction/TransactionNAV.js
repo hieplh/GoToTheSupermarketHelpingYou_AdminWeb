@@ -13,6 +13,7 @@ export default class TransactionNAV extends Component {
       uncomplete: [],
       searchValue: "",
       searchFound: false,
+      searchResults: [],
     };
     this.updateSearch = this.updateSearch.bind(this);
     this.showAll = this.showAll.bind(this);
@@ -56,22 +57,42 @@ export default class TransactionNAV extends Component {
 
   updateSearch = (e) => {
     this.setState({ searchValue: e.target.value });
+    
   };
   getSearch = () => {
     this.setState({ searchFound: true });
+    this.setState({
+      searchResults: this.state.all.filter((item) =>
+        item.title.includes(this.state.searchValue.trim()) || item.id === parseInt(this.state.searchValue) 
+      ),
+    });
+    
   };
   showAll = () => {
     this.setState({ searchFound: false });
   };
 
   render() {
+    // const searchRs = this.state.all
+    //   .filter((data) => {
+    //     if (this.state.searchValue === "") return data;
+    //     else if (
+    //       data.userId.includes(this.state.searchValue) ||
+    //       data.title.includes(this.state.searchValue)
+    //     ) {
+    //       return data;
+    //     }
+    //   })
+    //   .map((data) => {
+    //     return <Table data={data} />;
+    //   });
     return (
       <>
         <div style={{ marginLeft: 40, marginTop: 20, width: "95%" }}>
           <div style={{ display: "flex", flexDirection: "row-reverse" }}>
             <div>
               <input
-                style={{ width: 400 }}
+                style={{ width: 600 }}
                 type="text"
                 placeholder="Order Id, customer or shipper name,phone "
                 onChange={this.updateSearch}
@@ -90,7 +111,7 @@ export default class TransactionNAV extends Component {
                 Show All
               </button>
               <div style={{ marginTop: 10 }}>
-                <Table data={this.state.complete} />
+                {this.state.searchResults.length !== 0 ?  <Table data={this.state.searchResults} /> : 'No Results Found'}
               </div>
             </div>
           ) : (

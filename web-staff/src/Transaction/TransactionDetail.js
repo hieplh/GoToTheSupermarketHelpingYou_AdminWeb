@@ -5,12 +5,14 @@ import "../Transaction/TransactionDetail.css";
 import ShipperInfo from "../ShipperInfo/ShipperInfo";
 import ModalChangeShipper from "../Modal/Modal";
 import swal from "sweetalert";
-
+import { Button } from '@material-ui/core';
 export default class TransactionDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
       detail: {},
+      statusColor: '#4CAF50',
+      statusDetails: 'Delivering'
     };
     this.cancelTransaction = this.cancelTransaction.bind(this);
   }
@@ -35,11 +37,14 @@ export default class TransactionDetail extends Component {
       if (willDelete) {
         swal("Poof! Your imaginary file has been deleted!", {
           icon: "success",
-        });
+        },
+        this.setState({statusColor:'red'}),
+        this.setState({statusDetails:'Cancel'})
+        );
       } else {
         swal("Your imaginary file is safe!");
       }
-    });
+    })
   };
 
   render() {
@@ -80,8 +85,8 @@ export default class TransactionDetail extends Component {
             <div className="form-group col-md-2">
               <label htmlFor="inputEmail4">Order Status</label>
               <div style={{ display: "flex", alignItems: "center" }}>
-                <span className="dot"></span>
-                <div>Delivering</div>
+                <span style={{height:25,width:25,backgroundColor:this.state.statusColor,borderRadius:'50%',display: "inline-block",margin:10}}></span>
+                <div>{this.state.statusDetails}</div>
               </div>
             </div>
             <div className="form-group col-md-2">
@@ -223,6 +228,8 @@ export default class TransactionDetail extends Component {
 
           <br />
         </div>
+      
+        
       </>
     );
   }

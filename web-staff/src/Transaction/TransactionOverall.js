@@ -1,6 +1,7 @@
 import React from "react";
 
 const TransactionOverall = ({ Title, num, image, colorBackground }) => {
+  
   return (
     <div style={{ width: 400, height: 100 }}>
       <div
@@ -10,10 +11,11 @@ const TransactionOverall = ({ Title, num, image, colorBackground }) => {
           alignItems: "center",
           marginTop: 20,
           marginLeft: 40,
-          marginRight:20,
+          marginRight:5,
           border: "2px solid #596164",
           justifyContent: "center",
           background: colorBackground,
+          padding:5
         }}
       >
         <img

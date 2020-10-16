@@ -7,7 +7,7 @@ class Table extends Component {
     super(props);
     this.state = {
       currentPage:1,
-      itemsPerPage:5,
+      itemsPerPage:8,
 
     };
     this.styleStatus = this.styleStatus.bind(this);
