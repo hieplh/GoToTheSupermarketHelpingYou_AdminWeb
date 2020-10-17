@@ -12,16 +12,16 @@ import cancel from "../images/cancel.png";
 import timeout from "../images/timeout.png";
 import TransactionOverall from "../Transaction/TransactionOverall";
 import TransactionNAV from "../Transaction/TransactionNAV";
-import { ProSidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
+import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
-import { MDCRipple } from "@material/ripple";
+
 class DashBoard extends Component {
   render() {
     return (
       <>
         <div className="sidenav">
-          <a href="#">Home</a>
-          <a href="#">Request</a>
+        <Link to={'/home'}>Home</Link>
+        <Link to={"/requests"}>Request</Link>
         
         </div>
         <div className="main">

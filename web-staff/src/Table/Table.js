@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "../Table/Table.css";
 import Paging from "../Paging/Paging";
-import { Redirect , Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 class Table extends Component {
   constructor(props) {
     super(props);
