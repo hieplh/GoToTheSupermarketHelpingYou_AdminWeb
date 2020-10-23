@@ -9,6 +9,9 @@ export default class TransactionNAV extends Component {
     super(props);
     this.state = {
       all: [],
+      inprocess: [],
+      upcoming: [],
+      inqueue: [],
       complete: [],
       uncomplete: [],
       searchValue: "",
@@ -21,15 +24,47 @@ export default class TransactionNAV extends Component {
   }
 
   componentDidMount() {
-    axios.get("http://jsonplaceholder.typicode.com/todos").then((res) => {
+    axios.get("http://smhu.ddns.net/smhu/api/orders/all").then((res) => {
       this.setState({ all: res.data });
       this.setState({
-        complete: this.state.all.filter((order) => order.completed === true),
+        inprocess: this.state.all.filter(
+          (order) => order.status === 21 || order.status === 22
+        ),
       });
       this.setState({
-        uncomplete: this.state.all.filter((order) => order.completed === false),
+        upcoming: this.state.all.filter((order) => order.status === 23),
+      });
+      this.setState({
+        complete: this.state.all.filter((order) => order.status === 24),
+      });
+      this.setState({
+        inqueue: this.state.all.filter((order) => order.status === 12),
       });
     });
+
+    setInterval(
+      function () {
+        axios.get("http://smhu.ddns.net/smhu/api/orders/all").then((res) => {
+          console.log(res.data);
+          this.setState({ all: res.data });
+          this.setState({
+            inprocess: this.state.all.filter(
+              (order) => order.status === 21 || order.status === 22
+            ),
+          });
+          this.setState({
+            upcoming: this.state.all.filter((order) => order.status === 23),
+          });
+          this.setState({
+            complete: this.state.all.filter((order) => order.status === 24),
+          });
+          this.setState({
+            inqueue: this.state.all.filter((order) => order.status === 12),
+          });
+        });
+      }.bind(this),
+      20000
+    );
   }
   // filterStatusTransition = (status) => {
   //   switch (status) {
@@ -57,16 +92,19 @@ export default class TransactionNAV extends Component {
 
   updateSearch = (e) => {
     this.setState({ searchValue: e.target.value });
-    
   };
   getSearch = () => {
     this.setState({ searchFound: true });
     this.setState({
-      searchResults: this.state.all.filter((item) =>
-        item.title.includes(this.state.searchValue.trim()) || item.id === parseInt(this.state.searchValue) 
+      searchResults: this.state.all.filter(
+        (item) =>
+          item.id.includes(this.state.searchValue.trim()) ||
+          item.cust.includes(this.state.searchValue.trim())
+        // ||
+        // item.shipper.includes(this.state.searchValue.trim()
+        // )
       ),
     });
-    
   };
   showAll = () => {
     this.setState({ searchFound: false });
@@ -94,7 +132,7 @@ export default class TransactionNAV extends Component {
               <input
                 style={{ width: 600 }}
                 type="text"
-                placeholder="Order Id, customer or shipper name,phone "
+                placeholder="Order id, customer id "
                 onChange={this.updateSearch}
               />
               <input type="submit" value="Search" onClick={this.getSearch} />
@@ -111,7 +149,11 @@ export default class TransactionNAV extends Component {
                 Show All
               </button>
               <div style={{ marginTop: 10 }}>
-                {this.state.searchResults.length !== 0 ?  <Table data={this.state.searchResults} /> : 'No Results Found'}
+                {this.state.searchResults.length !== 0 ? (
+                  <Table data={this.state.searchResults} />
+                ) : (
+                  "No Results Found"
+                )}
               </div>
             </div>
           ) : (
@@ -133,16 +175,24 @@ export default class TransactionNAV extends Component {
               </TabPanel>
               <TabPanel>
                 <div style={{ marginTop: 10 }}>
-                  <Table data={this.state.complete} />
+                  <Table data={this.state.upcoming} />
                 </div>
               </TabPanel>
               <TabPanel>
                 <div style={{ marginTop: 10 }}>
-                  <Table data={this.state.uncomplete} />
+                  <Table data={this.state.inqueue} />
                 </div>
               </TabPanel>
-              <TabPanel></TabPanel>
-              <TabPanel></TabPanel>
+              <TabPanel>
+                <div style={{ marginTop: 10 }}>
+                  <Table data={this.state.inprocess} />
+                </div>
+              </TabPanel>
+              <TabPanel>
+                <div style={{ marginTop: 10 }}>
+                  <Table data={this.state.complete} />
+                </div>
+              </TabPanel>
               <TabPanel>
                 <div>
                   <Tabs>
@@ -157,7 +207,7 @@ export default class TransactionNAV extends Component {
                     </TabPanel>
                     <TabPanel>
                       <div style={{ marginTop: 10 }}>
-                        <Table data={this.state.uncomplete} />
+                        <Table data={this.state.inqueue} />
                       </div>
                     </TabPanel>
                   </Tabs>

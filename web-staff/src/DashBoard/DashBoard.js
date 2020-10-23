@@ -14,15 +14,73 @@ import TransactionOverall from "../Transaction/TransactionOverall";
 import TransactionNAV from "../Transaction/TransactionNAV";
 import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
-
+import axios from "axios";
 class DashBoard extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      all: 0,
+      upcoming: 0,
+      inqueue: 0,
+      processing: 0,
+      completed: 0,
+      cancel: 0,
+      timeout: 0,
+    };
+    this.autoFecth = this.autoFecth.bind(this);
+  }
+
+  autoFecth = () => {
+    axios
+    .get("http://smhu.ddns.net/smhu/api/dashboard/upcoming/count")
+    .then((res) => {
+      this.setState({ upcoming: res.data });
+    })
+    .then(
+      axios
+        .get("http://smhu.ddns.net/smhu/api/dashboard/inqueue/count")
+        .then((res) => {
+          this.setState({ inqueue: res.data });
+        })
+    )
+    .then(
+      axios
+        .get("http://smhu.ddns.net/smhu/api/dashboard/inprocess/count")
+        .then((res) => {
+          this.setState({ processing: res.data });
+        })
+    )
+    .then(
+      axios
+        .get("http://smhu.ddns.net/smhu/api/dashboard/done/count")
+        .then((res) => {
+          this.setState({ completed: res.data });
+        })
+    )
+    .then(
+      this.setState({
+        all:
+          this.state.upcoming +
+          this.state.inqueue +
+          this.state.processing +
+          this.state.completed,
+      })
+    );
+  }
+
+  componentDidMount() {
+    this.autoFecth();
+    setInterval(function(){ 
+        this.autoFecth();
+      
+     }.bind(this), 20000);
+  }
+
   render() {
     return (
       <>
         <div className="sidenav">
-        <Link to={'/home'}>Home</Link>
-        <Link to={"/requests"}>Request</Link>
-        
+          <Link to={"/home"}>Home</Link>
         </div>
         <div className="main">
           <div className="container1">
@@ -31,41 +89,41 @@ class DashBoard extends Component {
             <SelectDate />
             <LogOutButton />
           </div>
-          <Title />
+          <Title numberTrans={this.state.all} />
           <div style={{ display: "flex" }}>
             <TransactionOverall
               Title={"Upcoming Transactions"}
-              num={8}
+              num={this.state.upcoming}
               image={upcoming}
               colorBackground={"#ffecd2"}
             />
             <TransactionOverall
               Title={"Inqueue Transactions"}
-              num={8}
+              num={this.state.inqueue}
               image={queue}
               colorBackground={"#f5efef"}
             />
             <TransactionOverall
               Title={"Processing Transactions"}
-              num={8}
+              num={this.state.processing}
               image={processing}
               colorBackground={"rgb(223 233 255)"}
             />
             <TransactionOverall
               Title={"Complete Transactions"}
-              num={8}
+              num={this.state.completed}
               image={complete}
               colorBackground={"#e4efe9"}
             />
             <TransactionOverall
               Title={"Cancel Transactions"}
-              num={8}
+              num={0}
               image={cancel}
               colorBackground={"rgb(218 218 218)"}
             />
             <TransactionOverall
               Title={"Time Out Transactions"}
-              num={8}
+              num={0}
               image={timeout}
               colorBackground={"rgb(255 126 126)"}
             />
