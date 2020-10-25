@@ -32,38 +32,36 @@ class DashBoard extends Component {
 
   autoFecth = () => {
     axios
-    .get("http://smhu.ddns.net/smhu/api/dashboard/upcoming/count")
+    .get("http://192.168.43.81/smhu/api/dashboard/upcoming/count")
     .then((res) => {
       this.setState({ upcoming: res.data });
     })
     .then(
       axios
-        .get("http://smhu.ddns.net/smhu/api/dashboard/inqueue/count")
+        .get("http://192.168.43.81/smhu/api/dashboard/inqueue/count")
         .then((res) => {
           this.setState({ inqueue: res.data });
         })
     )
     .then(
       axios
-        .get("http://smhu.ddns.net/smhu/api/dashboard/inprocess/count")
+        .get("http://192.168.43.81/smhu/api/dashboard/inprogress/count")
         .then((res) => {
           this.setState({ processing: res.data });
         })
     )
     .then(
       axios
-        .get("http://smhu.ddns.net/smhu/api/dashboard/done/count")
+        .get("http://192.168.43.81/smhu/api/dashboard/done/count")
         .then((res) => {
           this.setState({ completed: res.data });
         })
     )
     .then(
-      this.setState({
-        all:
-          this.state.upcoming +
-          this.state.inqueue +
-          this.state.processing +
-          this.state.completed,
+      axios
+      .get("http://192.168.43.81/smhu/api/dashboard/inprocess/count")
+      .then((res) => {
+        this.setState({ all: res.data });
       })
     );
   }

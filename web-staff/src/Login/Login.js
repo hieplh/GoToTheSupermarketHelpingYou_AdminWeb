@@ -2,6 +2,7 @@ import React from "react";
 import logo from "../images/logo.png";
 import { Redirect } from "react-router-dom";
 import "./Login.css";
+import  Api , {LOGIN_URL} from "../apis/Api";
 import axios from "axios";
 
 class Login extends React.Component {
@@ -49,7 +50,7 @@ class Login extends React.Component {
   login(event) {
     const { Email, Password, rememberMe } = this.state;
     axios
-      .post("https://reqres.in/api/login", {
+      .post(LOGIN_URL, {
         email: this.state.Email,
         password: this.state.Password,
       })

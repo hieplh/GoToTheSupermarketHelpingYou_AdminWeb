@@ -24,7 +24,7 @@ export default class TransactionNAV extends Component {
   }
 
   componentDidMount() {
-    axios.get("http://smhu.ddns.net/smhu/api/orders/all").then((res) => {
+    axios.get("http://192.168.43.81/smhu/api/orders/all").then((res) => {
       this.setState({ all: res.data });
       this.setState({
         inprocess: this.state.all.filter(
@@ -44,7 +44,7 @@ export default class TransactionNAV extends Component {
 
     setInterval(
       function () {
-        axios.get("http://smhu.ddns.net/smhu/api/orders/all").then((res) => {
+        axios.get("http://192.168.43.81/smhu/api/orders/all").then((res) => {
           console.log(res.data);
           this.setState({ all: res.data });
           this.setState({
