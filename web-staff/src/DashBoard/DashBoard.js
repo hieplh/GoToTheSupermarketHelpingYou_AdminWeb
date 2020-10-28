@@ -15,6 +15,7 @@ import TransactionNAV from "../Transaction/TransactionNAV";
 import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 import axios from "axios";
+import {API_ENDPOINT} from '../apis/Api'
 class DashBoard extends Component {
   constructor(props) {
     super(props);
@@ -31,35 +32,36 @@ class DashBoard extends Component {
   }
 
   autoFecth = () => {
+    
     axios
-    .get("http://192.168.43.81/smhu/api/dashboard/upcoming/count")
+    .get(API_ENDPOINT+"dashboard/upcoming/count")
     .then((res) => {
       this.setState({ upcoming: res.data });
     })
     .then(
       axios
-        .get("http://192.168.43.81/smhu/api/dashboard/inqueue/count")
+        .get(API_ENDPOINT+"dashboard/inqueue/count")
         .then((res) => {
           this.setState({ inqueue: res.data });
         })
     )
     .then(
       axios
-        .get("http://192.168.43.81/smhu/api/dashboard/inprogress/count")
+        .get(API_ENDPOINT+"dashboard/inprogress/count")
         .then((res) => {
           this.setState({ processing: res.data });
         })
     )
     .then(
       axios
-        .get("http://192.168.43.81/smhu/api/dashboard/done/count")
+        .get(API_ENDPOINT+"dashboard/done/count")
         .then((res) => {
           this.setState({ completed: res.data });
         })
     )
     .then(
       axios
-      .get("http://192.168.43.81/smhu/api/dashboard/inprocess/count")
+      .get(API_ENDPOINT+"dashboard/inprocess/count")
       .then((res) => {
         this.setState({ all: res.data });
       })

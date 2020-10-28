@@ -2,10 +2,7 @@ import React, { Component } from "react";
 import ShipperIcon from "../images/delivery-man.png";
 
 class ShipperInfo extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+  
 
   render() {
     return (

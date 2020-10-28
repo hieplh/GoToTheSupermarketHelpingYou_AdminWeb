@@ -66,7 +66,7 @@ class Table extends Component {
                 <td>{item.shipper}</td>
                 <td>{this.styleStatus(item.status)}</td>
                 <td>
-                  <Link to={`/detail/${item.userId}`}>
+                  <Link to={`/detail/${item.id}`}>
                     <button>View</button>
                   </Link>
                 </td>

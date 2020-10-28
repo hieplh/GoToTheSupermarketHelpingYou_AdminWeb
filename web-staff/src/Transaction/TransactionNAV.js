@@ -3,7 +3,7 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import axios from "axios";
 import Table from "../Table/Table";
-
+import {API_ENDPOINT} from '../apis/Api'
 export default class TransactionNAV extends Component {
   constructor(props) {
     super(props);
@@ -24,7 +24,7 @@ export default class TransactionNAV extends Component {
   }
 
   componentDidMount() {
-    axios.get("http://192.168.43.81/smhu/api/orders/all").then((res) => {
+    axios.get(API_ENDPOINT+"orders/all").then((res) => {
       this.setState({ all: res.data });
       this.setState({
         inprocess: this.state.all.filter(
@@ -44,7 +44,7 @@ export default class TransactionNAV extends Component {
 
     setInterval(
       function () {
-        axios.get("http://192.168.43.81/smhu/api/orders/all").then((res) => {
+        axios.get(API_ENDPOINT+"orders/all").then((res) => {
           console.log(res.data);
           this.setState({ all: res.data });
           this.setState({
