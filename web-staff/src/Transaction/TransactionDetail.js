@@ -1,11 +1,12 @@
 import React, { Component } from "react";
+import { Modal, Button } from "react-bootstrap";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import "../Transaction/TransactionDetail.css";
 import ShipperInfo from "../ShipperInfo/ShipperInfo";
 import ModalChangeShipper from "../Modal/Modal";
 import swal from "sweetalert";
-import { Button } from "@material-ui/core";
+// import { Button } from "@material-ui/core";
 import { API_ENDPOINT } from "../apis/Api";
 export default class TransactionDetail extends Component {
   constructor(props) {
@@ -17,6 +18,7 @@ export default class TransactionDetail extends Component {
     };
     this.cancelTransaction = this.cancelTransaction.bind(this);
     this.styleStatus = this.styleStatus.bind(this);
+    this.changeShipper = this.changeShipper.bind(this);
   }
 
   styleStatus = (status) => {
@@ -48,6 +50,18 @@ export default class TransactionDetail extends Component {
       20000
     );
   }
+
+  changeShipper = () => {
+    const { id } = this.props.match.params;
+    console.log(id);
+    axios.get(API_ENDPOINT + `/switch/${id}`).then((response) => {
+      console.log("Change Shipper : " + response);
+      axios.get(API_ENDPOINT + `/order/${id}`).then((response) => {
+        this.setState({ detail: response.data });
+      });
+    });
+  };
+
   cancelTransaction = () => {
     swal({
       title: "Are you sure?",
@@ -73,7 +87,6 @@ export default class TransactionDetail extends Component {
   };
 
   render() {
-    console.log(this.state.detail.shipper);
     return (
       <>
         <div style={{ marginTop: 20, marginLeft: 20 }}>
@@ -101,13 +114,16 @@ export default class TransactionDetail extends Component {
               >
                 Cancel
               </button>
-              <ModalChangeShipper
+              <Button variant="warning" onClick={this.changeShipper}>
+                Changes Shipper
+              </Button>
+              {/* <ModalChangeShipper
                 address={
                   this.state.detail.address
                     ? this.state.detail.address.street
                     : ""
                 }
-              />
+              /> */}
             </div>
           </div>
 
@@ -238,19 +254,19 @@ export default class TransactionDetail extends Component {
             <div className="form-group col-md-4">
               <label htmlFor="inputCity">Shipper Delivering :</label>
               <ShipperInfo
-                name={this.state.detail.cust}
+                name={this.state.detail.shipper}
                 phone={"91029102"}
                 time={this.state.detail.timeDelivery}
               />
             </div>
-            <div className="form-group col-md-4">
+            {/* <div className="form-group col-md-4">
               <label htmlFor="inputState">Handed over from : :</label>
               <ShipperInfo
                 name={this.state.detail.shipper}
                 phone={"91029102"}
                 time={"12120-q12121"}
               />
-            </div>
+            </div> */}
             <div className="form-group col-md-4">
               <label htmlFor="inputState">
                 Customer verify when deliver success :
