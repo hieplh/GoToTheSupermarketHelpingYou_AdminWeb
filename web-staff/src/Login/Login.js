@@ -2,7 +2,7 @@ import React from "react";
 import logo from "../images/logo.png";
 import { Redirect } from "react-router-dom";
 import "./Login.css";
-import  Api , {LOGIN_URL} from "../apis/Api";
+import  {LOGIN_URL} from "../apis/Api";
 import axios from "axios";
 
 class Login extends React.Component {
@@ -51,10 +51,11 @@ class Login extends React.Component {
     const { Email, Password, rememberMe } = this.state;
     axios
       .post(LOGIN_URL, {
-        email: this.state.Email,
+        username: this.state.Email,
+        role:'staff',
         password: this.state.Password,
       })
-      .then((res) => this.setState({ token: res.data }))
+      .then((res) => this.setState({ token: res.data.id }))
       .then((res) => localStorage.setItem("rememberMe", rememberMe))
       .then((res) =>
         localStorage.setItem("email", this.state.rememberMe ? Email : "")

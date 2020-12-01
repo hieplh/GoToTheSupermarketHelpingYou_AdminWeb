@@ -6,7 +6,9 @@ import "../Transaction/TransactionDetail.css";
 import ShipperInfo from "../ShipperInfo/ShipperInfo";
 import ModalChangeShipper from "../Modal/Modal";
 import swal from "sweetalert";
+import MyMapComponent from "../map/Googlemap";
 // import { Button } from "@material-ui/core";
+import Geocode from "react-geocode";
 import { API_ENDPOINT } from "../apis/Api";
 export default class TransactionDetail extends Component {
   constructor(props) {
@@ -15,6 +17,10 @@ export default class TransactionDetail extends Component {
       detail: {},
       statusColor: "#4CAF50",
       statusDetails: "Delivering",
+      shipperPosition: [],
+      addressDeliveryLatLng: {},
+      addLat: "",
+      addLng: "",
     };
     this.cancelTransaction = this.cancelTransaction.bind(this);
     this.styleStatus = this.styleStatus.bind(this);
@@ -33,28 +39,64 @@ export default class TransactionDetail extends Component {
       case 22:
         return <p style={{ color: "blue" }}>Processing</p>;
       default:
+        return <p style={{ color: "grey" }}>Cancel</p>;
     }
   };
   componentDidMount() {
+    Geocode.setApiKey("AIzaSyCvlIOQUZEmyNxvrwKtXACB_QqycPTnAmE");
+
+    // set response language. Defaults to english.
+    Geocode.setLanguage("vi");
+
     const { id } = this.props.match.params;
-    axios.get(API_ENDPOINT + `/order/${id}`).then((response) => {
-      this.setState({ detail: response.data });
-    });
+    axios
+      .get(API_ENDPOINT + `/order/staff/${id}`)
+      .then((response) => {
+        this.setState({ detail: response.data });
+      })
+      .then((res) => {
+        axios.get(API_ENDPOINT + `/tracking/${id}`).then((position) => {
+          this.setState({ shipperPosition: position.data });
+
+          Geocode.fromAddress(`${this.state.detail.addressDelivery}`).then(
+            (response) => {
+              const { lat, lng } = response.results[0].geometry.location;
+              this.setState({
+                addLat: lat,
+                addLng: lng,
+              });
+              console.log(parseFloat(this.state.shipperPosition[0]));
+              // console.log("Dia chi giao : " + this.state.detail.addressDeliveryLatLng);
+            },
+            (error) => {
+              console.error(error);
+            }
+          );
+        });
+      });
 
     setInterval(
       function () {
-        axios.get(API_ENDPOINT + `/order/${id}`).then((response) => {
-          this.setState({ detail: response.data });
-        });
+        axios
+          .get(API_ENDPOINT + `/order/staff/${id}`)
+          .then((response) => {
+            this.setState({ detail: response.data });
+          })
+          .then((res) => {
+            axios.get(API_ENDPOINT + `/tracking/${id}`).then((position) => {
+              this.setState({ shipperPosition: position.data });
+            });
+          });
       }.bind(this),
-      20000
+      5000
     );
   }
 
   changeShipper = () => {
+    var staffID = sessionStorage.getItem("userToken");
     const { id } = this.props.match.params;
     console.log(id);
-    axios.get(API_ENDPOINT + `/switch/${id}`).then((response) => {
+    axios.get(API_ENDPOINT + `/switch/${id}/${staffID}`).then((response) => {
       console.log("Change Shipper : " + response);
       axios.get(API_ENDPOINT + `/order/${id}`).then((response) => {
         this.setState({ detail: response.data });
@@ -63,23 +105,35 @@ export default class TransactionDetail extends Component {
   };
 
   cancelTransaction = () => {
+    var staffID = sessionStorage.getItem("userToken");
     swal({
-      title: "Are you sure?",
+      title: "Are you sure to cancel this transaction ?",
       text:
         "Once deleted, you will not be able to recover this imaginary file!",
       icon: "warning",
       buttons: true,
       dangerMode: true,
     }).then((willDelete) => {
+      console.log(API_ENDPOINT +
+        "delete/" +
+        this.state.detail.id +
+        "/staff/" +
+        staffID);
       if (willDelete) {
-        swal(
-          "Poof! Your imaginary file has been deleted!",
-          {
-            icon: "success",
-          },
-          this.setState({ statusColor: "red" }),
-          this.setState({ statusDetails: "Cancel" })
-        );
+        axios
+          .delete(
+            API_ENDPOINT +
+              "delete/" +
+              this.state.detail.id +
+              "/staff/" +
+              staffID
+          )
+          .then((response) => {
+            console.log(response.status);
+            swal("Cancel transaction successfully !", {
+              icon: "success",
+            });
+          });
       } else {
         swal("Your imaginary file is safe!");
       }
@@ -91,7 +145,7 @@ export default class TransactionDetail extends Component {
       <>
         <div style={{ marginTop: 20, marginLeft: 20 }}>
           <Link to="/home">
-            <button type="button" class="btn btn-primary">
+            <button type="button" className="btn btn-primary">
               Back
             </button>
           </Link>{" "}
@@ -114,9 +168,17 @@ export default class TransactionDetail extends Component {
               >
                 Cancel
               </button>
-              <Button variant="warning" onClick={this.changeShipper}>
+              <button
+                onClick={this.changeShipper}
+                style={{ margin: 20 }}
+                type="submit"
+                className="btn btn-warning"
+              >
                 Changes Shipper
-              </Button>
+              </button>
+              {/* <Button variant="warning" onClick={this.changeShipper}>
+                Changes Shipper
+              </Button> */}
               {/* <ModalChangeShipper
                 address={
                   this.state.detail.address
@@ -142,16 +204,17 @@ export default class TransactionDetail extends Component {
             <div className="form-group col-md-2">
               <label htmlFor="inputPassword4">Order ID</label>
               <input
+                readOnly
                 value={this.state.detail.id}
                 type="text"
                 className="form-control"
-                id="inputPassword4"
                 placeholder="Password"
               />
             </div>
             <div className="form-group col-md-2">
               <label htmlFor="inputPassword4">Total Cost</label>
               <input
+                readOnly
                 value={this.state.detail.totalCost}
                 type="text"
                 className="form-control"
@@ -162,6 +225,7 @@ export default class TransactionDetail extends Component {
             <div className="form-group col-md-2">
               <label htmlFor="inputEmail4">Ship Cost</label>
               <input
+                readOnly
                 value={this.state.detail.costDelivery}
                 type="email"
                 className="form-control"
@@ -172,6 +236,7 @@ export default class TransactionDetail extends Component {
             <div className="form-group col-md-2">
               <label htmlFor="inputPassword4">Shopping Fees</label>
               <input
+                readOnly
                 value={this.state.detail.costShopping}
                 className="form-control"
                 id="inputPassword4"
@@ -181,6 +246,7 @@ export default class TransactionDetail extends Component {
             <div className="form-group col-md-2">
               <label htmlFor="inputEmail4">Refund</label>
               <input
+                readOnly
                 value={this.state.detail.costShopping}
                 type="email"
                 className="form-control"
@@ -194,7 +260,15 @@ export default class TransactionDetail extends Component {
             <div className="form-group col-md-4">
               <label htmlFor="inputCity">Customer name :</label>
               <input
-                value={this.state.detail.cust}
+                readOnly
+                value={
+                  this.state.detail.customer &&
+                  this.state.detail.customer.lastName +
+                    " " +
+                    this.state.detail.customer.middleName +
+                    " " +
+                    this.state.detail.customer.firstName
+                }
                 type="text"
                 className="form-control"
                 id="inputCity"
@@ -203,6 +277,7 @@ export default class TransactionDetail extends Component {
             <div className="form-group col-md-4">
               <label htmlFor="inputPassword4">Customer phone number</label>
               <input
+                readOnly
                 value="091291021"
                 type="text"
                 className="form-control"
@@ -213,6 +288,7 @@ export default class TransactionDetail extends Component {
             <div className="form-group col-md-4">
               <label htmlFor="inputPassword4">Customer email</label>
               <input
+                readOnly
                 value="levanteo19@gmail.com"
                 type="text"
                 className="form-control"
@@ -225,6 +301,7 @@ export default class TransactionDetail extends Component {
             <div className="form-group col-md-6">
               <label htmlFor="inputCity">Delivery Address :</label>
               <input
+                readOnly
                 value={this.state.detail.addressDelivery}
                 type="text"
                 className="form-control"
@@ -234,7 +311,10 @@ export default class TransactionDetail extends Component {
             <div className="form-group col-md-6">
               <label htmlFor="inputState">Supermarket Address :</label>
               <input
-                value={this.state.detail.market}
+                readOnly
+                value={
+                  this.state.detail.market && this.state.detail.market.name
+                }
                 type="text"
                 className="form-control"
                 id="inputCity"
@@ -252,10 +332,19 @@ export default class TransactionDetail extends Component {
 
           <div className="form-row">
             <div className="form-group col-md-4">
-              <label htmlFor="inputCity">Shipper Delivering :</label>
+              <label htmlFor="inputCity">Shipper Delivery :</label>
               <ShipperInfo
-                name={this.state.detail.shipper}
-                phone={"91029102"}
+                name={
+                  this.state.detail.shipper &&
+                  this.state.detail.shipper.lastName +
+                    " " +
+                    this.state.detail.shipper.middleName +
+                    " " +
+                    this.state.detail.shipper.firstName
+                }
+                phone={
+                  this.state.detail.shipper && this.state.detail.shipper.phone
+                }
                 time={this.state.detail.timeDelivery}
               />
             </div>
@@ -272,6 +361,24 @@ export default class TransactionDetail extends Component {
                 Customer verify when deliver success :
               </label>
               <img src="https://via.placeholder.com/150C" alt="verify" />
+            </div>
+          </div>
+          <div className="form-row">
+          
+            <div className="form-group col-md-8">
+              <MyMapComponent
+                marketPositionLat={
+                  this.state.detail.market && this.state.detail.market.lat
+                }
+                marketPositionLong={
+                  this.state.detail.market && this.state.detail.market.lng
+                }
+                addressDeliveryLat={this.state.addLat}
+                addressDeliveryLng={this.state.addLng}
+                shipperPosition={this.state.shipperPosition}
+                shipperPositionLat={parseFloat(this.state.shipperPosition[0])}
+                shipperPositionLong={parseFloat(this.state.shipperPosition[1])}
+              />
             </div>
           </div>
 

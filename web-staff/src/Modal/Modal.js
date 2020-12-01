@@ -1,30 +1,35 @@
 import { Modal, Button } from "react-bootstrap";
 import axios from "axios";
 import React, { useState } from "react";
-
-
-
-const  ModalChangeShipper = ({address}) => {
+import MyMapComponent from "../map/Googlemap";
+import swal from 'sweetalert';
+import { API_ENDPOINT } from "../apis/Api";
+const ModalChangeShipper = ({ address , orderID}) => {
   const [show, setShow] = useState(false);
-  const [shipperList,setShipperList] = useState([])
+  const [shipperList, setShipperList] = useState([]);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
- 
-  
+  const [shipperID, setShipperID] = useState("");
 
-  function getLocation() {
-    navigator.geolocation.getCurrentPosition(function(location) {
-      console.log(location.coords.latitude, location.coords.longitude)
-      axios.get('https://jsonplaceholder.typicode.com/users').then((response) => {
-        setShipperList(response.data);
-      })
+  const getIdShipper = (e) => {
+    setShipperID(e.currentTarget.value);
+    console.log(e.currentTarget.value);
+    console.log(orderID);
+  };
+
+  function changeShipper() {
+    axios.get(API_ENDPOINT + `/switch/${orderID}`/`${shipperID}`).then(response => {
+      swal({
+        title: "Success",
+        text: "Change Shipper successfully",
+        icon: "success",
+      });
+    }).then(response => {
+      handleClose();
     });
   }
-  
-  
-  
 
   return (
     <>
@@ -37,37 +42,38 @@ const  ModalChangeShipper = ({address}) => {
           <Modal.Title>Change Shipper</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-
-         <label>Location of current shipper</label>
+          <label>Input shipper ID</label>
           <div id="shipper">
             <input
               style={{ width: 400 }}
               type="text"
+              onChange={getIdShipper}
               value={address}
-              disabled
+             
             />
-            <input type="submit" value="Find" onClick={getLocation} />
+            {/* <input type="submit" value="Find" onClick={getLocation} /> */}
           </div>
-            <br></br>
+          <br></br>
 
-          <h3>Shipper available </h3>
+          {/* <h3>Shipper available </h3>
           <select name="cars" id="cars">
            {shipperList.map((shipper, index) =>(
              <option key={index} value={shipper.id}>{shipper.name}</option>
            ))}
-          </select>
+          </select> */}
+          <MyMapComponent />
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={changeShipper}>
             Save Changes
           </Button>
         </Modal.Footer>
       </Modal>
     </>
   );
-}
+};
 
 export default ModalChangeShipper;

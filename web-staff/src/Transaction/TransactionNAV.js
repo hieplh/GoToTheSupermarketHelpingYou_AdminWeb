@@ -14,6 +14,7 @@ export default class TransactionNAV extends Component {
       inqueue: [],
       complete: [],
       uncomplete: [],
+      cancel: [],
       searchValue: "",
       searchFound: false,
       searchResults: [],
@@ -40,12 +41,15 @@ export default class TransactionNAV extends Component {
       this.setState({
         inqueue: this.state.all.filter((order) => order.status === 12),
       });
+      this.setState({
+        cancel: this.state.all.filter((order) => order.status < 0),
+      });
     });
 
     setInterval(
       function () {
         axios.get(API_ENDPOINT+"orders/all").then((res) => {
-          console.log(res.data);
+        
           this.setState({ all: res.data });
           this.setState({
             inprocess: this.state.all.filter(
@@ -202,12 +206,12 @@ export default class TransactionNAV extends Component {
                     </TabList>
                     <TabPanel>
                       <div style={{ marginTop: 10 }}>
-                        <Table data={this.state.complete} />
+                        <Table data={this.state.cancel} />
                       </div>
                     </TabPanel>
                     <TabPanel>
                       <div style={{ marginTop: 10 }}>
-                        <Table data={this.state.inqueue} />
+                        <Table data={this.state.cancel} />
                       </div>
                     </TabPanel>
                   </Tabs>

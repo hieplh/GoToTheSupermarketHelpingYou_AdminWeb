@@ -65,6 +65,12 @@ class DashBoard extends Component {
       .then((res) => {
         this.setState({ all: res.data });
       })
+    ).then(
+      axios
+      .get(API_ENDPOINT+"dashboard/cancel/count")
+      .then((res) => {
+        this.setState({ cancel: res.data });
+      })
     );
   }
 
@@ -81,6 +87,7 @@ class DashBoard extends Component {
       <>
         <div className="sidenav">
           <Link to={"/home"}>Home</Link>
+          <Link to={"/account"}>Account</Link>
         </div>
         <div className="main">
           <div className="container1">
@@ -117,7 +124,7 @@ class DashBoard extends Component {
             />
             <TransactionOverall
               Title={"Cancel Transactions"}
-              num={0}
+              num={this.state.cancel}
               image={cancel}
               colorBackground={"rgb(218 218 218)"}
             />

@@ -24,6 +24,13 @@ class Table extends Component {
       case 21:
       case 22:
         return <p style={{ color: "blue" }}>Processing</p>;
+      case -12:
+      case -21:
+      case -22:
+      case -23:
+      case -24:
+      case -31:
+        return <p style={{ color: "grey" }}>Cancel</p>;
       default:
     }
   };
