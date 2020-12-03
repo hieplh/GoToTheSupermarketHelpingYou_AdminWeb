@@ -17,7 +17,7 @@ export default class TransactionDetail extends Component {
       detail: {},
       statusColor: "#4CAF50",
       statusDetails: "Delivering",
-      shipperPosition: [],
+      shipperPosition: {},
       addressDeliveryLatLng: {},
       addLat: "",
       addLng: "",
@@ -65,7 +65,7 @@ export default class TransactionDetail extends Component {
                 addLat: lat,
                 addLng: lng,
               });
-              console.log(parseFloat(this.state.shipperPosition[0]));
+             
               // console.log("Dia chi giao : " + this.state.detail.addressDeliveryLatLng);
             },
             (error) => {
@@ -376,8 +376,8 @@ export default class TransactionDetail extends Component {
                 addressDeliveryLat={this.state.addLat}
                 addressDeliveryLng={this.state.addLng}
                 shipperPosition={this.state.shipperPosition}
-                shipperPositionLat={parseFloat(this.state.shipperPosition[0])}
-                shipperPositionLong={parseFloat(this.state.shipperPosition[1])}
+                shipperPositionLat={parseFloat(this.state.shipperPosition['lat'])}
+                shipperPositionLong={parseFloat(this.state.shipperPosition['lng'])}
               />
             </div>
           </div>

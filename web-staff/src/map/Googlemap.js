@@ -63,8 +63,8 @@ class SimpleMap extends Component {
           /> */}
 
           <MarkerOnMap
-            lat={this.props.shipperPosition[0]}
-            lng={this.props.shipperPosition[1]}
+            lat={this.props.shipperPosition['lat']}
+            lng={this.props.shipperPosition['lng']}
             name="Shipper"
             srcUrl={logoShipper}
           />
