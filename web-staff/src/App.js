@@ -5,6 +5,7 @@ import DashBoard from './DashBoard/DashBoard'
 import Account from './Account/Account'
 import Request from './Request/Request'
 import TransitionDetails from './Transaction/TransactionDetail'
+import UserDetail from './UserDetail/UserDetail'
 import {
   BrowserRouter as Router,
   Route,
@@ -14,6 +15,7 @@ function App() {
   return (
     <Router>
        <Route path="/detail/:id" exact component={TransitionDetails}/> 
+       <Route path="/user/:type/:id" exact component={UserDetail}/> 
       <Route  path="/" exact component={sessionStorage.getItem("userToken")!=null ? DashBoard : Login}/>
       <Route path="/login" component={Login}/>
       <Route path="/home" component={DashBoard}/>

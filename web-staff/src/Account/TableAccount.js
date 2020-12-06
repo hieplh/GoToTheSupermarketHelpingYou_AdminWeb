@@ -36,9 +36,6 @@ class TableAccount extends Component {
                 <th>Phone</th>
                 <th>Date of birth</th>
                 <th>Wallet</th>
-                <th>Number of order delivery</th>
-                <th>Number of order cancel</th>
-                <th>Max accept orders</th>
                 <th>Status</th>
                 <th>Action</th>
               </tr>
@@ -54,14 +51,11 @@ class TableAccount extends Component {
                   <td>{item.phone}</td>
                   <td>{item.dob}</td>
                   <td>{item.wallet}</td>
-                  <td>{item.numDelivery}</td>
-                  <td>{item.numCancel}</td>
-                  <td>{item.maxOrder}</td>
                   <td>Active</td>
                   <td>
-                    <Link to={`/detail/${item.id}`}>
-                      <button>Disable</button>
-                    </Link>
+                  <Link to={`/user/${item.role}/${item.id}`}>
+                    <button>View</button>
+                  </Link>
                   </td>
                 </tr>
               ))}
@@ -94,9 +88,9 @@ class TableAccount extends Component {
                   <td>{item.wallet}</td>
                   <td>Active</td>
                   <td>
-                    <Link to={`/detail/${item.id}`}>
-                      <button>Disable</button>
-                    </Link>
+                  <Link to={`/user/${item.role}/${item.id}`}>
+                    <button>View</button>
+                  </Link>
                   </td>
                 </tr>
               ))}

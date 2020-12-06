@@ -26,6 +26,7 @@ export default class Account extends Component {
   };
   getSearch = () => {
     this.setState({ searchFound: true });
+
     this.setState({
       searchResults: this.state.all.filter(
         (item) =>
@@ -34,6 +35,7 @@ export default class Account extends Component {
           item.lastName.includes(this.state.searchValue.trim()) ||
           item.middleName.includes(this.state.searchValue.trim()) ||
           item.firstName.includes(this.state.searchValue.trim())
+
         // ||
         // item.shipper.includes(this.state.searchValue.trim()
         // )
@@ -79,7 +81,7 @@ export default class Account extends Component {
                 <input
                   style={{ width: 600 }}
                   type="text"
-                  placeholder="User id "
+                  placeholder="User id , User name , User email"
                   onChange={this.updateSearch}
                 />
                 <input type="submit" value="Search" onClick={this.getSearch} />
