@@ -49,6 +49,7 @@ export default class TransactionDetail extends Component {
     Geocode.setLanguage("vi");
 
     const { id } = this.props.match.params;
+
     axios
       .get(API_ENDPOINT + `/order/staff/${id}`)
       .then((response) => {
@@ -57,21 +58,6 @@ export default class TransactionDetail extends Component {
       .then((res) => {
         axios.get(API_ENDPOINT + `/tracking/${id}`).then((position) => {
           this.setState({ shipperPosition: position.data });
-
-          Geocode.fromAddress(`${this.state.detail.addressDelivery}`).then(
-            (response) => {
-              const { lat, lng } = response.results[0].geometry.location;
-              this.setState({
-                addLat: lat,
-                addLng: lng,
-              });
-             
-              // console.log("Dia chi giao : " + this.state.detail.addressDeliveryLatLng);
-            },
-            (error) => {
-              console.error(error);
-            }
-          );
         });
       });
 
@@ -86,6 +72,20 @@ export default class TransactionDetail extends Component {
             axios.get(API_ENDPOINT + `/tracking/${id}`).then((position) => {
               this.setState({ shipperPosition: position.data });
             });
+            Geocode.fromAddress(`${this.state.detail.addressDelivery}`).then(
+              (response) => {
+                const { lat, lng } = response.results[0].geometry.location;
+                this.setState({
+                  addLat: lat,
+                  addLng: lng,
+                });
+
+                // console.log("Dia chi giao : " + this.state.detail.addressDeliveryLatLng);
+              },
+              (error) => {
+                console.error(error);
+              }
+            );
           });
       }.bind(this),
       5000
@@ -114,11 +114,9 @@ export default class TransactionDetail extends Component {
       buttons: true,
       dangerMode: true,
     }).then((willDelete) => {
-      console.log(API_ENDPOINT +
-        "delete/" +
-        this.state.detail.id +
-        "/staff/" +
-        staffID);
+      console.log(
+        API_ENDPOINT + "delete/" + this.state.detail.id + "/staff/" + staffID
+      );
       if (willDelete) {
         axios
           .delete(
@@ -364,7 +362,6 @@ export default class TransactionDetail extends Component {
             </div>
           </div>
           <div className="form-row">
-          
             <div className="form-group col-md-8">
               <MyMapComponent
                 marketPositionLat={
@@ -376,8 +373,12 @@ export default class TransactionDetail extends Component {
                 addressDeliveryLat={this.state.addLat}
                 addressDeliveryLng={this.state.addLng}
                 shipperPosition={this.state.shipperPosition}
-                shipperPositionLat={parseFloat(this.state.shipperPosition['lat'])}
-                shipperPositionLong={parseFloat(this.state.shipperPosition['lng'])}
+                shipperPositionLat={parseFloat(
+                  this.state.shipperPosition["lat"]
+                )}
+                shipperPositionLong={parseFloat(
+                  this.state.shipperPosition["lng"]
+                )}
               />
             </div>
           </div>
