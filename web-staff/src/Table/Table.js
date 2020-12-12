@@ -62,7 +62,6 @@ class Table extends Component {
               <th>Status</th>
               <th>Detail</th>
               <th>Action</th>
-              <th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -74,16 +73,12 @@ class Table extends Component {
                 <td>{this.styleStatus(item.status)}</td>
                 <td>
                   <Link to={`/detail/${item.id}`}>
-                    <button>View</button>
+                    View
                   </Link>
                 </td>
+              
                 <td>
-                  <a onClick={(e) => e.preventDefault} href="#">
-                    Change Shipper
-                  </a>
-                </td>
-                <td>
-                  <a onClick={(e) => e.preventDefault} href="#">
+                  <a style={{color:'red'}} onClick={(e) => e.preventDefault} href="#">
                     Cancel
                   </a>
                 </td>

@@ -8,6 +8,7 @@ import ModalChangeShipper from "../Modal/Modal";
 import swal from "sweetalert";
 import MyMapComponent from "../map/Googlemap";
 // import { Button } from "@material-ui/core";
+import ImageOrder from "../ImageOrder/ImageOrder";
 import Geocode from "react-geocode";
 import { API_ENDPOINT } from "../apis/Api";
 export default class TransactionDetail extends Component {
@@ -19,6 +20,7 @@ export default class TransactionDetail extends Component {
       statusDetails: "Delivering",
       shipperPosition: {},
       addressDeliveryLatLng: {},
+      imageOrder: "",
       addLat: "",
       addLng: "",
     };
@@ -164,16 +166,9 @@ export default class TransactionDetail extends Component {
                 type="submit"
                 className="btn btn-danger"
               >
-                Cancel
+                Cancel 
               </button>
-              <button
-                onClick={this.changeShipper}
-                style={{ margin: 20 }}
-                type="submit"
-                className="btn btn-warning"
-              >
-                Changes Shipper
-              </button>
+              
               {/* <Button variant="warning" onClick={this.changeShipper}>
                 Changes Shipper
               </Button> */}
@@ -358,7 +353,16 @@ export default class TransactionDetail extends Component {
               <label htmlFor="inputState">
                 Customer verify when deliver success :
               </label>
-              <img src="https://via.placeholder.com/150C" alt="verify" />
+              <img
+                src={API_ENDPOINT +
+                  "image/" +
+                  `${this.state.detail.id}` +
+                  "_1.png/shipper/" +
+                  `${this.state.detail.shipper && this.state.detail.shipper.id}`}
+                alt="Evidence"
+                width="300"
+                height="200"
+              ></img>
             </div>
           </div>
           <div className="form-row">
