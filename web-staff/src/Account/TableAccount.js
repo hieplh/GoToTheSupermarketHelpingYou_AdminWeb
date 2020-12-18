@@ -32,7 +32,7 @@ class TableAccount extends Component {
               <tr>
                 <th>ID</th>
                 <th>Name</th>
-                <th>Email</th>
+
                 <th>Phone</th>
                 <th>Date of birth</th>
                 <th>Wallet</th>
@@ -47,15 +47,13 @@ class TableAccount extends Component {
                   <td>
                     {item.lastName} {item.middleName} {item.firstName}
                   </td>
-                  <td>{item.email}</td>
+
                   <td>{item.phone}</td>
                   <td>{item.dob}</td>
                   <td>{item.wallet}</td>
                   <td>Active</td>
                   <td>
-                  <Link to={`/user/${item.role}/${item.id}`}>
-                    <button>View</button>
-                  </Link>
+                    <Link to={`/user/${item.role}/${item.username}`}>View</Link>
                   </td>
                 </tr>
               ))}
@@ -67,7 +65,7 @@ class TableAccount extends Component {
               <tr>
                 <th>ID</th>
                 <th>Name</th>
-                <th>Email</th>
+
                 <th>Phone</th>
                 <th>Date of birth</th>
                 <th>Wallet</th>
@@ -82,15 +80,13 @@ class TableAccount extends Component {
                   <td>
                     {item.lastName} {item.middleName} {item.firstName}
                   </td>
-                  <td>{item.email}</td>
+
                   <td>{item.phone}</td>
                   <td>{item.dob}</td>
                   <td>{item.wallet}</td>
                   <td>Active</td>
                   <td>
-                  <Link to={`/user/${item.role}/${item.id}`}>
-                    <button>View</button>
-                  </Link>
+                    <Link to={`/user/${item.role}/${item.username}`}>View</Link>
                   </td>
                 </tr>
               ))}

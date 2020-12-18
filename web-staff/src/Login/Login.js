@@ -55,7 +55,7 @@ class Login extends React.Component {
         role:'staff',
         password: this.state.Password,
       })
-      .then((res) => this.setState({ token: res.data.id }))
+      .then((res) => this.setState({ token: res.data.username }))
       .then((res) => localStorage.setItem("rememberMe", rememberMe))
       .then((res) =>
         localStorage.setItem("email", this.state.rememberMe ? Email : "")

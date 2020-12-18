@@ -8,7 +8,7 @@ import ModalChangeShipper from "../Modal/Modal";
 import swal from "sweetalert";
 import MyMapComponent from "../map/Googlemap";
 // import { Button } from "@material-ui/core";
-import ImageOrder from "../ImageOrder/ImageOrder";
+
 import Geocode from "react-geocode";
 import { API_ENDPOINT } from "../apis/Api";
 export default class TransactionDetail extends Component {
@@ -26,7 +26,6 @@ export default class TransactionDetail extends Component {
     };
     this.cancelTransaction = this.cancelTransaction.bind(this);
     this.styleStatus = this.styleStatus.bind(this);
-    this.changeShipper = this.changeShipper.bind(this);
   }
 
   styleStatus = (status) => {
@@ -56,6 +55,16 @@ export default class TransactionDetail extends Component {
       .get(API_ENDPOINT + `/order/staff/${id}`)
       .then((response) => {
         this.setState({ detail: response.data });
+        this.setState({
+          imageOrder:
+            API_ENDPOINT +
+            "image/" +
+            `${this.state.detail.id}` +
+            "_1.png/shipper/" +
+            `${
+              this.state.detail.shipper && this.state.detail.shipper.username
+            }`,
+        });
       })
       .then((res) => {
         axios.get(API_ENDPOINT + `/tracking/${id}`).then((position) => {
@@ -88,23 +97,24 @@ export default class TransactionDetail extends Component {
                 console.error(error);
               }
             );
+          })
+          .then((res) => {
+            this.setState({
+              imageOrder:
+                API_ENDPOINT +
+                "image/" +
+                `${this.state.detail.id}` +
+                "_1.png/shipper/" +
+                `${
+                  this.state.detail.shipper &&
+                  this.state.detail.shipper.username
+                }`,
+            });
           });
       }.bind(this),
       5000
     );
   }
-
-  changeShipper = () => {
-    var staffID = sessionStorage.getItem("userToken");
-    const { id } = this.props.match.params;
-    console.log(id);
-    axios.get(API_ENDPOINT + `/switch/${id}/${staffID}`).then((response) => {
-      console.log("Change Shipper : " + response);
-      axios.get(API_ENDPOINT + `/order/${id}`).then((response) => {
-        this.setState({ detail: response.data });
-      });
-    });
-  };
 
   cancelTransaction = () => {
     var staffID = sessionStorage.getItem("userToken");
@@ -166,9 +176,9 @@ export default class TransactionDetail extends Component {
                 type="submit"
                 className="btn btn-danger"
               >
-                Cancel 
+                Cancel
               </button>
-              
+
               {/* <Button variant="warning" onClick={this.changeShipper}>
                 Changes Shipper
               </Button> */}
@@ -354,11 +364,7 @@ export default class TransactionDetail extends Component {
                 Customer verify when deliver success :
               </label>
               <img
-                src={API_ENDPOINT +
-                  "image/" +
-                  `${this.state.detail.id}` +
-                  "_1.png/shipper/" +
-                  `${this.state.detail.shipper && this.state.detail.shipper.id}`}
+                src={this.state.imageOrder}
                 alt="Evidence"
                 width="300"
                 height="200"

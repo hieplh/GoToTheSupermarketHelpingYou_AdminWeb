@@ -91,25 +91,15 @@ export default class UserDetail extends Component {
                       <label htmlFor="inputEmail4">User ID</label>
                       <input
                         disabled
-                        value={this.state.userData.id}
+                        value={this.state.userData.username}
                         type="email"
                         className="form-control"
                         id="inputEmail4"
                         placeholder="brown@asher.me"
                       />
                     </div>
-                    <div className="form-group col-md-4">
-                      <label htmlFor="inputEmail4">Email</label>
-                      <input
-                        disabled
-                        value={this.state.userData.email}
-                        type="email"
-                        className="form-control"
-                        id="inputEmail4"
-                        placeholder="brown@asher.me"
-                      />
-                    </div>
-                    <div className="form-group col-md-4">
+                 
+                    <div className="form-group col-md-8">
                       <label htmlFor="inputEmail4">Phone</label>
                       <input
                         disabled

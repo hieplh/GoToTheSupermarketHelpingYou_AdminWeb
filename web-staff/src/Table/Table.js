@@ -61,7 +61,7 @@ class Table extends Component {
               <th>Shipper Delivery</th>
               <th>Status</th>
               <th>Detail</th>
-              <th>Action</th>
+             
             </tr>
           </thead>
           <tbody>
@@ -77,11 +77,7 @@ class Table extends Component {
                   </Link>
                 </td>
               
-                <td>
-                  <a style={{color:'red'}} onClick={(e) => e.preventDefault} href="#">
-                    Cancel
-                  </a>
-                </td>
+               
               </tr>
             ))}
           </tbody>
