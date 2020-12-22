@@ -93,7 +93,7 @@ class DashBoard extends Component {
           <div className="container1">
             <img src={logo} alt="logo" />
             <h1>DASHBOARD OVERVIEW</h1>
-            <SelectDate />
+          
             <LogOutButton />
           </div>
           <Title numberTrans={this.state.all} />
@@ -128,12 +128,7 @@ class DashBoard extends Component {
               image={cancel}
               colorBackground={"rgb(218 218 218)"}
             />
-            <TransactionOverall
-              Title={"Time Out Transactions"}
-              num={0}
-              image={timeout}
-              colorBackground={"rgb(255 126 126)"}
-            />
+      
           </div>
           <br />
           <br /> <br />

@@ -19,6 +19,7 @@ class Logout extends Component {
   };
 
   render() {
+    var staffID = sessionStorage.getItem("userToken");
     if (this.state.navigate) {
         
         return (
@@ -27,7 +28,7 @@ class Logout extends Component {
       }
     return (
       <div >
-         <Welcome name={"Phuong Nguyen"} /> <br/> 
+         <Welcome name={staffID} /> <br/> 
         <button  onClick={this.logOut}>Log Out</button>
       </div>
     );

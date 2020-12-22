@@ -78,6 +78,17 @@ export default class TransactionDetail extends Component {
           .get(API_ENDPOINT + `/order/staff/${id}`)
           .then((response) => {
             this.setState({ detail: response.data });
+            this.setState({
+              imageOrder:
+                API_ENDPOINT +
+                "image/" +
+                `${this.state.detail.id}` +
+                "_1.png/shipper/" +
+                `${
+                  this.state.detail.shipper &&
+                  this.state.detail.shipper.username
+                }`,
+            });
           })
           .then((res) => {
             axios.get(API_ENDPOINT + `/tracking/${id}`).then((position) => {
@@ -97,19 +108,6 @@ export default class TransactionDetail extends Component {
                 console.error(error);
               }
             );
-          })
-          .then((res) => {
-            this.setState({
-              imageOrder:
-                API_ENDPOINT +
-                "image/" +
-                `${this.state.detail.id}` +
-                "_1.png/shipper/" +
-                `${
-                  this.state.detail.shipper &&
-                  this.state.detail.shipper.username
-                }`,
-            });
           });
       }.bind(this),
       5000
@@ -130,6 +128,11 @@ export default class TransactionDetail extends Component {
         API_ENDPOINT + "delete/" + this.state.detail.id + "/staff/" + staffID
       );
       if (willDelete) {
+        if (this.state.detail.status == 24) {
+          swal("Error occurred !", {
+            icon: "error",
+          });
+        }
         axios
           .delete(
             API_ENDPOINT +
@@ -140,12 +143,14 @@ export default class TransactionDetail extends Component {
           )
           .then((response) => {
             console.log(response.status);
-            swal("Cancel transaction successfully !", {
-              icon: "success",
-            });
+            if (response.status === 200) {
+              swal("Cancel transaction successfully !", {
+                icon: "success",
+              });
+            } else {
+            }
           });
       } else {
-        swal("Your imaginary file is safe!");
       }
     });
   };
@@ -211,7 +216,6 @@ export default class TransactionDetail extends Component {
                 value={this.state.detail.id}
                 type="text"
                 className="form-control"
-                placeholder="Password"
               />
             </div>
             <div className="form-group col-md-2">
@@ -222,7 +226,6 @@ export default class TransactionDetail extends Component {
                 type="text"
                 className="form-control"
                 id="inputPassword4"
-                placeholder="Password"
               />
             </div>
             <div className="form-group col-md-2">
@@ -233,7 +236,6 @@ export default class TransactionDetail extends Component {
                 type="email"
                 className="form-control"
                 id="inputEmail4"
-                placeholder="Email"
               />
             </div>
             <div className="form-group col-md-2">
@@ -243,7 +245,6 @@ export default class TransactionDetail extends Component {
                 value={this.state.detail.costShopping}
                 className="form-control"
                 id="inputPassword4"
-                placeholder="Password"
               />
             </div>
             <div className="form-group col-md-2">
@@ -254,7 +255,6 @@ export default class TransactionDetail extends Component {
                 type="email"
                 className="form-control"
                 id="inputEmail4"
-                placeholder="Email"
               />
             </div>
           </div>
@@ -285,18 +285,15 @@ export default class TransactionDetail extends Component {
                 type="text"
                 className="form-control"
                 id="inputPassword4"
-                placeholder="Password"
               />
             </div>
             <div className="form-group col-md-4">
               <label htmlFor="inputPassword4">Customer email</label>
               <input
                 readOnly
-                value="levanteo19@gmail.com"
                 type="text"
                 className="form-control"
                 id="inputPassword4"
-                placeholder="Password"
               />
             </div>
           </div>
@@ -336,20 +333,49 @@ export default class TransactionDetail extends Component {
           <div className="form-row">
             <div className="form-group col-md-4">
               <label htmlFor="inputCity">Shipper Delivery :</label>
-              <ShipperInfo
-                name={
-                  this.state.detail.shipper &&
-                  this.state.detail.shipper.lastName +
-                    " " +
-                    this.state.detail.shipper.middleName +
-                    " " +
-                    this.state.detail.shipper.firstName
-                }
-                phone={
-                  this.state.detail.shipper && this.state.detail.shipper.phone
-                }
-                time={this.state.detail.timeDelivery}
-              />
+              <ul>
+                <li>
+                  License Plate :{" "}
+                  <ul>
+                    <li>
+                      {" "}
+                      {this.state.detail.shipper &&
+                        this.state.detail.shipper.vin}
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  Phone:{" "}
+                  <ul>
+                    <li>
+                      {" "}
+                      {this.state.detail.shipper &&
+                        this.state.detail.shipper.phone}{" "}
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  Name:{" "}
+                  <ul>
+                    <li>
+                      {this.state.detail.shipper &&
+                        this.state.detail.shipper.firstName}{" "}
+                      {this.state.detail.shipper &&
+                        this.state.detail.shipper.middleName}{" "}
+                      {this.state.detail.shipper && this.state.lastName}
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  Shipper Id:
+                  <ul>
+                    <li>
+                    {this.state.detail.shipper &&
+                        this.state.detail.shipper.username}{" "}
+                    </li>
+                  </ul>
+                </li>
+              </ul>
             </div>
             {/* <div className="form-group col-md-4">
               <label htmlFor="inputState">Handed over from : :</label>
@@ -361,14 +387,32 @@ export default class TransactionDetail extends Component {
             </div> */}
             <div className="form-group col-md-4">
               <label htmlFor="inputState">
-                Customer verify when deliver success :
+                Shipper verify when deliver success :
               </label>
-              <img
-                src={this.state.imageOrder}
-                alt="Evidence"
-                width="300"
-                height="200"
-              ></img>
+              {this.state.detail.status === 24 ? (
+                <img
+                  src={
+                    API_ENDPOINT +
+                    "image/" +
+                    `${this.state.detail.id}` +
+                    "_1.png/shipper/" +
+                    `${
+                      this.state.detail.shipper &&
+                      this.state.detail.shipper.username
+                    }`
+                  }
+                  alt="Evidence"
+                  width="300"
+                  height="200"
+                ></img>
+              ) : (
+                <img
+                  src="https://lunawood.com/wp-content/uploads/2018/02/placeholder-image.png"
+                  alt="Evidence"
+                  width="300"
+                  height="200"
+                ></img>
+              )}
             </div>
           </div>
           <div className="form-row">

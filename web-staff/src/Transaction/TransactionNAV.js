@@ -3,7 +3,7 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import axios from "axios";
 import Table from "../Table/Table";
-import {API_ENDPOINT} from '../apis/Api'
+import { API_ENDPOINT } from "../apis/Api";
 export default class TransactionNAV extends Component {
   constructor(props) {
     super(props);
@@ -25,7 +25,7 @@ export default class TransactionNAV extends Component {
   }
 
   componentDidMount() {
-    axios.get(API_ENDPOINT+"orders/all").then((res) => {
+    axios.get(API_ENDPOINT + "orders/all").then((res) => {
       this.setState({ all: res.data });
       this.setState({
         inprocess: this.state.all.filter(
@@ -48,8 +48,7 @@ export default class TransactionNAV extends Component {
 
     setInterval(
       function () {
-        axios.get(API_ENDPOINT+"orders/all").then((res) => {
-        
+        axios.get(API_ENDPOINT + "orders/all").then((res) => {
           this.setState({ all: res.data });
           this.setState({
             inprocess: this.state.all.filter(
@@ -142,6 +141,7 @@ export default class TransactionNAV extends Component {
               <input type="submit" value="Search" onClick={this.getSearch} />
             </div>
           </div>
+          <br/>
 
           {this.state.searchFound ? (
             <div>
@@ -169,7 +169,6 @@ export default class TransactionNAV extends Component {
                 <Tab>Processing</Tab>
                 <Tab>Complete</Tab>
                 <Tab>Cancel</Tab>
-                <Tab>Time Out</Tab>
               </TabList>
 
               <TabPanel>
@@ -198,26 +197,11 @@ export default class TransactionNAV extends Component {
                 </div>
               </TabPanel>
               <TabPanel>
-                <div>
-                  <Tabs>
-                    <TabList>
-                      <Tab>Customer Cancel</Tab>
-                      <Tab>Shipper Cancel</Tab>
-                    </TabList>
-                    <TabPanel>
-                      <div style={{ marginTop: 10 }}>
-                        <Table data={this.state.cancel} />
-                      </div>
-                    </TabPanel>
-                    <TabPanel>
-                      <div style={{ marginTop: 10 }}>
-                        <Table data={this.state.cancel} />
-                      </div>
-                    </TabPanel>
-                  </Tabs>
+                <div style={{ marginTop: 10 }}>
+                  <Table data={this.state.cancel} />
                 </div>
               </TabPanel>
-              <TabPanel></TabPanel>
+            
             </Tabs>
           )}
         </div>

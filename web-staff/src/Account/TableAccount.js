@@ -43,7 +43,7 @@ class TableAccount extends Component {
             <tbody>
               {currentItem.map((item, index) => (
                 <tr key={index}>
-                  <td>{item.id}</td>
+                  <td>{item.username}</td>
                   <td>
                     {item.lastName} {item.middleName} {item.firstName}
                   </td>
@@ -76,7 +76,7 @@ class TableAccount extends Component {
             <tbody>
               {currentItem.map((item, index) => (
                 <tr key={index}>
-                  <td>{item.id}</td>
+                  <td>{item.username}</td>
                   <td>
                     {item.lastName} {item.middleName} {item.firstName}
                   </td>

@@ -69,7 +69,7 @@ class Table extends Component {
               <tr key={index}>
                 <td>{item.id}</td>
                 <td>{item.cust}</td>
-                <td>{item.shipper}</td>
+                <td>{item.shipper == null ? "" : item.shipper.username}</td>
                 <td>{this.styleStatus(item.status)}</td>
                 <td>
                   <Link to={`/detail/${item.id}`}>
