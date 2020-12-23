@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import "../Transaction/TransactionDetail.css";
 import ShipperInfo from "../ShipperInfo/ShipperInfo";
 import ModalChangeShipper from "../Modal/Modal";
+
 import swal from "sweetalert";
 import MyMapComponent from "../map/Googlemap";
 // import { Button } from "@material-ui/core";
@@ -118,8 +119,6 @@ export default class TransactionDetail extends Component {
     var staffID = sessionStorage.getItem("userToken");
     swal({
       title: "Are you sure to cancel this transaction ?",
-      text:
-        "Once deleted, you will not be able to recover this imaginary file!",
       icon: "warning",
       buttons: true,
       dangerMode: true,
@@ -287,15 +286,7 @@ export default class TransactionDetail extends Component {
                 id="inputPassword4"
               />
             </div>
-            <div className="form-group col-md-4">
-              <label htmlFor="inputPassword4">Customer email</label>
-              <input
-                readOnly
-                type="text"
-                className="form-control"
-                id="inputPassword4"
-              />
-            </div>
+           
           </div>
           <div className="form-row">
             <div className="form-group col-md-6">

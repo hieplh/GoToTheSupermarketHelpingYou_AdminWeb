@@ -49,20 +49,9 @@ export default class Account extends Component {
   submitForm(event) {
     var dateYMD = Moment(this.state.dob).format("YYYY-MM-DD");
     var passwordRandom = this.makePassword(5);
-    console.log({
-      dob: dateYMD,
-      firstName: this.state.firstName,
-      lastName: this.state.lastName,
-      middleName: this.state.middleName,
-      password: passwordRandom,
-      phone: this.state.phone,
-      role: "shipper",
-      username: this.state.userID,
-      vin: this.state.license,
-    });
 
     axios
-      .post(API_ENDPOINT + "register/", {
+      .post(API_ENDPOINT + "account/register/", {
         dob: this.state.dob,
         firstName: this.state.firstName,
         lastName: this.state.lastName,
@@ -202,7 +191,7 @@ export default class Account extends Component {
           <div className="container1">
             <img src={logo} alt="logo" />
             <h1>ACCOUNT OVERVIEW</h1>
-            <SelectDate />
+
             <LogOutButton />
           </div>
 
@@ -330,12 +319,19 @@ export default class Account extends Component {
 
                 <TabPanel>
                   <div style={{ marginTop: 10 }}>
-                    <TableAccount data={this.state.shipper} type="shipper" />
+                    {this.state.shipper.length > 0 ? (
+                      <TableAccount data={this.state.shipper} type="shipper" />
+                    ) : null}
                   </div>
                 </TabPanel>
                 <TabPanel>
                   <div style={{ marginTop: 10 }}>
-                    <TableAccount data={this.state.customer} type="customer" />
+                    {this.state.customer.length > 0 ? (
+                      <TableAccount
+                        data={this.state.customer}
+                        type="customer"
+                      />
+                    ) : null}
                   </div>
                 </TabPanel>
               </Tabs>
