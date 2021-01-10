@@ -186,6 +186,7 @@ export default class Account extends Component {
         <div className="sidenav">
           <Link to={"/home"}>Home</Link>
           <Link to={"/account"}>Account</Link>
+          <Link to={"/cost"}>Cost Shipping</Link>
         </div>
         <div className="main">
           <div className="container1">
