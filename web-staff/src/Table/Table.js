@@ -16,14 +16,16 @@ class Table extends Component {
   styleStatus = (status) => {
     switch (status) {
       case 24:
-        return <p style={{ color: "green" }}>Completed</p>;
+        return <p style={{ color: "green" }}>Done</p>;
       case 12:
-        return <p style={{ color: "red" }}>Inqueue</p>;
+        return <p style={{ color: "red" }}>Pending</p>;
       case 23:
-        return <p style={{ color: "orange" }}>Upcoming</p>;
+        return <p style={{ color: "orange" }}>Delivering</p>;
       case 21:
+        return <p style={{ color: "brown" }}>Accepted</p>;
       case 22:
-        return <p style={{ color: "blue" }}>Processing</p>;
+        return <p style={{ color: "blue" }}>Shopping</p>;
+      case -13:
       case -12:
       case -21:
       case -22:
@@ -59,9 +61,9 @@ class Table extends Component {
               <th>ID</th>
               <th>Customer Order</th>
               <th>Shipper Delivery</th>
+              <th>Create Date</th>
               <th>Status</th>
               <th>Detail</th>
-             
             </tr>
           </thead>
           <tbody>
@@ -70,14 +72,11 @@ class Table extends Component {
                 <td>{item.id}</td>
                 <td>{item.cust}</td>
                 <td>{item.shipper == null ? "" : item.shipper.username}</td>
+                <td>{item.createDate}</td>
                 <td>{this.styleStatus(item.status)}</td>
                 <td>
-                  <Link to={`/detail/${item.id}`}>
-                    View
-                  </Link>
+                  <Link to={`/detail/${item.id}`}>View</Link>
                 </td>
-              
-               
               </tr>
             ))}
           </tbody>

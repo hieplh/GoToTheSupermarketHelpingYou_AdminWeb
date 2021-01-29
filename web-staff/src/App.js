@@ -7,6 +7,7 @@ import Request from "./Request/Request";
 import TransitionDetails from "./Transaction/TransactionDetail";
 import UserDetail from "./UserDetail/UserDetail";
 import CostShipping from "./CostShipping/CostShipping";
+import Income from "./Income/Income"
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
       <Route path="/account" component={Account} />
       <Route path="/requests" component={Request} />
       <Route path="/cost" component={CostShipping} />
+      <Route path="/income" component={Income} /> 
     </Router>
   );
 }

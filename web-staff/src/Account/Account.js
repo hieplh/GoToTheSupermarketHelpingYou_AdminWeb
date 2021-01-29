@@ -27,7 +27,7 @@ export default class Account extends Component {
       userID: "",
       firstName: "",
       middleName: "",
-      lastName: "",
+      fullName: "",
       dob: new Date(),
       phone: "",
       license: "",
@@ -38,46 +38,67 @@ export default class Account extends Component {
     this.updateUserValue = this.updateUserValue.bind(this);
     this.updateFirstNameValue = this.updateFirstNameValue.bind(this);
     this.updateMiddleNameValue = this.updateMiddleNameValue.bind(this);
-    this.updateLastNameValue = this.updateLastNameValue.bind(this);
+    this.updateFullNameValue = this.updateFullNameValue.bind(this);
     this.updateDob = this.updateDob.bind(this);
     this.updatePhone = this.updatePhone.bind(this);
     this.updateLicense = this.updateLicense.bind(this);
     this.submitForm = this.submitForm.bind(this);
     this.makePassword = this.makePassword.bind(this);
+    this.confirmOTP = this.confirmOTP.bind(this);
+  }
+
+  confirmOTP(otp, passwordRandom) {
+    axios
+      .get(
+        API_ENDPOINT +
+          "account/" +
+          `${this.state.phone}` +
+          "/otp/" +
+          `${otp}` +
+          "/register"
+      )
+      .then(function (response) {
+        console.log(response.data + "otp ver");
+        alert("Your password is  :" + `${passwordRandom}`);
+      });
   }
 
   submitForm(event) {
     var dateYMD = Moment(this.state.dob).format("YYYY-MM-DD");
     var passwordRandom = this.makePassword(5);
+    var phoneOfUser = this.state.phone;
 
     axios
       .post(API_ENDPOINT + "account/register/", {
         dob: this.state.dob,
-        firstName: this.state.firstName,
-        lastName: this.state.lastName,
-        middleName: this.state.middleName,
+        fullname: this.state.fullName,
         password: passwordRandom,
-        phone: this.state.phone,
         role: "shipper",
-        username: this.state.userID,
+        username: this.state.phone,
         vin: this.state.license,
       })
       .then(function (response) {
         if (response.status == 200) {
-          swal(
-            "Create account successfully !",
-            "Password for account is " + `${passwordRandom}`,
-            {
-              icon: "success",
-            }
-          );
+          var matches = response.data.match(/(\d+)/);
+          axios
+            .get(
+              API_ENDPOINT +
+                "account/" +
+                `${phoneOfUser}` +
+                "/otp/" +
+                `${matches[0]}` +
+                "/register"
+            )
+            .then(function (response) {
+              swal({
+                icon: "success",
+                title: "Create account successfully !",
+                text: "Your password is  :" + `${passwordRandom}`,
+              });
+            });
         }
       })
-      .catch(function (error) {
-        swal(error.response.data, {
-          icon: "error",
-        });
-      });
+      .catch(function (error) {});
 
     event.preventDefault();
   }
@@ -102,8 +123,8 @@ export default class Account extends Component {
     this.setState({ middleName: event.target.value });
     console.log(event.target.value);
   }
-  updateLastNameValue(event) {
-    this.setState({ lastName: event.target.value });
+  updateFullNameValue(event) {
+    this.setState({ fullName: event.target.value });
     console.log(event.target.value);
   }
   updateDob(date) {
@@ -140,22 +161,13 @@ export default class Account extends Component {
       searchResults: this.state.all.filter(
         (item) =>
           item.username
-            .toLowerCase()
+
             .trim()
             .includes(this.state.searchValue.toLowerCase().trim()) ||
-          item.lastName
-            .toLowerCase()
-            .trim()
-            .includes(this.state.searchValue.toLowerCase().trim()) ||
-          item.middleName
-            .toLowerCase()
-            .trim()
-            .includes(this.state.searchValue.toLowerCase().trim()) ||
-          item.firstName
+          item.fullname
             .toLowerCase()
             .trim()
             .includes(this.state.searchValue.toLowerCase().trim())
-
         // ||
         // item.shipper.includes(this.state.searchValue.trim()
         // )
@@ -187,6 +199,7 @@ export default class Account extends Component {
           <Link to={"/home"}>Home</Link>
           <Link to={"/account"}>Account</Link>
           <Link to={"/cost"}>Cost Shipping</Link>
+          <Link to={"/income"}>Income</Link>
         </div>
         <div className="main">
           <div className="container1">
@@ -203,47 +216,23 @@ export default class Account extends Component {
             <Modal.Body>
               <form onSubmit={this.submitForm}>
                 <div className="form-group">
-                  <label>Username:</label>
+                  <label>Full name:</label>
                   <input
                     required
                     type="text"
                     className="form-control"
-                    onChange={this.updateUserValue}
-                  />
-                </div>
-                <div className="form-group">
-                  <label>First Name:</label>
-                  <input
-                    required
-                    type="text"
-                    className="form-control"
-                    onChange={this.updateFirstNameValue}
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Middle Name:</label>
-                  <input
-                    required
-                    type="text"
-                    className="form-control"
-                    onChange={this.updateMiddleNameValue}
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Last Name:</label>
-                  <input
-                    required
-                    type="text"
-                    className="form-control"
-                    onChange={this.updateLastNameValue}
+                    onChange={this.updateFullNameValue}
                   />
                 </div>
                 <div className="form-group">
                   <label>Date of Birth:</label> <br />
-                  <DatePicker
-                    required
-                    selected={this.state.dob}
-                    onChange={(date) => this.updateDob(date)}
+                  <input
+                    type="date"
+                    name="expiration date"
+                    value={this.state.dob}
+                    onChange={(event) =>
+                      this.setState({ dob: event.target.value })
+                    }
                   />
                 </div>
                 <div className="form-group">

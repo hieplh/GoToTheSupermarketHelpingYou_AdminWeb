@@ -4,7 +4,7 @@ import Paging from "../Paging/Paging";
 import { Link } from "react-router-dom";
 import swal from "sweetalert";
 import axios from "axios";
-import NumberFormat from 'react-number-format';
+import NumberFormat from "react-number-format";
 import { API_ENDPOINT } from "../apis/Api";
 class TableAccount extends Component {
   constructor(props) {
@@ -29,7 +29,7 @@ class TableAccount extends Component {
         if (res.status === 200) {
           swal(
             "Disable account successfully !",
-  
+
             {
               icon: "success",
             }
@@ -38,9 +38,7 @@ class TableAccount extends Component {
           });
         }
       });
-
     });
-  
   }
   render() {
     const indexOfLastPost = this.state.currentPage * this.state.itemsPerPage;
@@ -60,10 +58,9 @@ class TableAccount extends Component {
           <table style={{ width: "100%" }}>
             <thead>
               <tr>
-                <th>ID</th>
+                <th>Phone (ID)</th>
                 <th>Name</th>
 
-                <th>Phone</th>
                 <th>Date of birth</th>
                 <th>Wallet</th>
                 <th>Status</th>
@@ -75,13 +72,17 @@ class TableAccount extends Component {
               {currentItem.map((item, index) => (
                 <tr key={index}>
                   <td>{item.username}</td>
-                  <td>
-                    {item.lastName} {item.middleName} {item.firstName}
-                  </td>
+                  <td>{item.fullname}</td>
 
-                  <td>{item.phone}</td>
                   <td>{item.dob}</td>
-                  <td><NumberFormat value={item.wallet} displayType={'text'} thousandSeparator={true} /> vnd</td>
+                  <td>
+                    <NumberFormat
+                      value={item.wallet}
+                      displayType={"text"}
+                      thousandSeparator={true}
+                    />{" "}
+                    vnd
+                  </td>
                   <td>Active</td>
                   <td>
                     <Link to={`/user/${item.role}/${item.username}`}>View</Link>
@@ -102,10 +103,10 @@ class TableAccount extends Component {
           <table style={{ width: "100%" }}>
             <thead>
               <tr>
-                <th>ID</th>
+                <th>Phone (ID)</th>
                 <th>Name</th>
 
-                <th>Phone</th>
+            
                 <th>Date of birth</th>
                 <th>Wallet</th>
                 <th>Status</th>
@@ -117,12 +118,19 @@ class TableAccount extends Component {
                 <tr key={index}>
                   <td>{item.username}</td>
                   <td>
-                    {item.lastName} {item.middleName} {item.firstName}
+                    {item.fullname}
                   </td>
 
-                  <td>{item.phone}</td>
+                
                   <td>{item.dob}</td>
-                  <td><NumberFormat value={item.wallet} displayType={'text'} thousandSeparator={true} /> vnd</td>
+                  <td>
+                    <NumberFormat
+                      value={item.wallet}
+                      displayType={"text"}
+                      thousandSeparator={true}
+                    />{" "}
+                    vnd
+                  </td>
                   <td>Active</td>
                   <td>
                     <Link to={`/user/${item.role}/${item.username}`}>View</Link>

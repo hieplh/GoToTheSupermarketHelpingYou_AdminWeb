@@ -1,3 +1,4 @@
-export var LOGIN_URL = "http://192.168.1.2:1234/shm4/api/smhu/account/username";
-export var API_ENDPOINT = "http://192.168.1.2:1234/shm4/api/smhu/";
-export var MANAGE_COST_SITE = "http://192.168.1.2:1234/shm3/";
+export var LOGIN_URL = "http://smhu.ddns.net:8084/smhu/api/account/username";
+export var API_ENDPOINT = "http://smhu.ddns.net:8084/smhu/api/";
+export var MANAGE_COST_SITE = "http://smhu.ddns.net:8084/smhu/";
+export var INCOME_SITE = "http://smhu.ddns.net:8084/smhu/overall";

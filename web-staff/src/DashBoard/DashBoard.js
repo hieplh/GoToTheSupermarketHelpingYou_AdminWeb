@@ -89,6 +89,7 @@ class DashBoard extends Component {
           <Link to={"/home"}>Home</Link>
           <Link to={"/account"}>Account</Link>
           <Link to={"/cost"}>Cost Shipping</Link>
+          <Link to={"/income"}>Income</Link>
         </div>
         <div className="main">
           <div className="container1">
@@ -100,25 +101,25 @@ class DashBoard extends Component {
           <Title numberTrans={this.state.all} />
           <div style={{ display: "flex" }}>
             <TransactionOverall
-              Title={"Upcoming Orders"}
+              Title={"Delivering Orders"}
               num={this.state.upcoming}
               image={upcoming}
               colorBackground={"#ffecd2"}
             />
             <TransactionOverall
-              Title={"Inqueue Orders"}
+              Title={"Pending Orders"}
               num={this.state.inqueue}
               image={queue}
               colorBackground={"#f5efef"}
             />
             <TransactionOverall
-              Title={"Processing Orders"}
+              Title={"Accepted and Shopping Orders"}
               num={this.state.processing}
               image={processing}
               colorBackground={"rgb(223 233 255)"}
             />
             <TransactionOverall
-              Title={"Complete Orders"}
+              Title={"Done Orders"}
               num={this.state.completed}
               image={complete}
               colorBackground={"#e4efe9"}

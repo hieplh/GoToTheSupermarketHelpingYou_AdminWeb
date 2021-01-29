@@ -32,14 +32,15 @@ export default class TransactionDetail extends Component {
   styleStatus = (status) => {
     switch (status) {
       case 24:
-        return <p style={{ color: "green" }}>Completed</p>;
+        return <p style={{ color: "green" }}>Done</p>;
       case 12:
-        return <p style={{ color: "red" }}>Inqueue</p>;
+        return <p style={{ color: "red" }}>Pending</p>;
       case 23:
-        return <p style={{ color: "orange" }}>Upcoming</p>;
+        return <p style={{ color: "orange" }}>Delivering</p>;
       case 21:
+        return <p style={{ color: "brown" }}>Accepted</p>;
       case 22:
-        return <p style={{ color: "blue" }}>Processing</p>;
+        return <p style={{ color: "blue" }}>Shopping</p>;
       default:
         return <p style={{ color: "grey" }}>Cancel</p>;
     }
@@ -172,7 +173,7 @@ export default class TransactionDetail extends Component {
           }}
         >
           <div style={{ display: "flex", justifyContent: "space-around" }}>
-            <h1 style={{ flexGrow: 2 }}>TRANSACTIONS DETAIL</h1>
+            <h1 style={{ flexGrow: 2 }}>ORDER DETAIL</h1>
             <div style={{ flexGrow: 1 }}>
               <button
                 onClick={this.cancelTransaction}
@@ -247,10 +248,10 @@ export default class TransactionDetail extends Component {
               />
             </div>
             <div className="form-group col-md-2">
-              <label htmlFor="inputEmail4">Refund</label>
+              <label htmlFor="inputEmail4">Refund for customer</label>
               <input
                 readOnly
-                value={this.state.detail.costShopping}
+                value={this.state.detail.refundCost}
                 type="email"
                 className="form-control"
                 id="inputEmail4"
@@ -265,11 +266,7 @@ export default class TransactionDetail extends Component {
                 readOnly
                 value={
                   this.state.detail.customer &&
-                  this.state.detail.customer.lastName +
-                    " " +
-                    this.state.detail.customer.middleName +
-                    " " +
-                    this.state.detail.customer.firstName
+                  this.state.detail.customer.fullname
                 }
                 type="text"
                 className="form-control"
@@ -286,7 +283,6 @@ export default class TransactionDetail extends Component {
                 id="inputPassword4"
               />
             </div>
-           
           </div>
           <div className="form-row">
             <div className="form-group col-md-6">
@@ -341,7 +337,7 @@ export default class TransactionDetail extends Component {
                     <li>
                       {" "}
                       {this.state.detail.shipper &&
-                        this.state.detail.shipper.phone}{" "}
+                        this.state.detail.shipper.username}{" "}
                     </li>
                   </ul>
                 </li>
@@ -350,19 +346,7 @@ export default class TransactionDetail extends Component {
                   <ul>
                     <li>
                       {this.state.detail.shipper &&
-                        this.state.detail.shipper.firstName}{" "}
-                      {this.state.detail.shipper &&
-                        this.state.detail.shipper.middleName}{" "}
-                      {this.state.detail.shipper && this.state.lastName}
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  Shipper Id:
-                  <ul>
-                    <li>
-                    {this.state.detail.shipper &&
-                        this.state.detail.shipper.username}{" "}
+                        this.state.detail.shipper.fullname}{" "}
                     </li>
                   </ul>
                 </li>

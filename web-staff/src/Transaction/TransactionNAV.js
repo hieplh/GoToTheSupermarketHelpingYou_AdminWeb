@@ -25,6 +25,7 @@ export default class TransactionNAV extends Component {
   }
 
   componentDidMount() {
+    
     axios.get(API_ENDPOINT + "orders/all").then((res) => {
       this.setState({ all: res.data });
       this.setState({
@@ -47,7 +48,9 @@ export default class TransactionNAV extends Component {
     });
 
     setInterval(
+      
       function () {
+        console.log("PPPPPP");
         axios.get(API_ENDPOINT + "orders/all").then((res) => {
           this.setState({ all: res.data });
           this.setState({
@@ -164,10 +167,10 @@ export default class TransactionNAV extends Component {
             <Tabs defaultIndex={0}>
               <TabList>
                 <Tab>All</Tab>
-                <Tab>Upcoming</Tab>
-                <Tab>Inqueue</Tab>
-                <Tab>Processing</Tab>
-                <Tab>Complete</Tab>
+                <Tab>Delivering</Tab>
+                <Tab>Pending</Tab>
+                <Tab>Accepted and Shopping</Tab>
+                <Tab>Done</Tab>
                 <Tab>Cancel</Tab>
               </TabList>
 

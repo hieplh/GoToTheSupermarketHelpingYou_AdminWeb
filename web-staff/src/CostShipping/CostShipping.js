@@ -11,6 +11,7 @@ export default class CostShipping extends Component {
           <Link to={"/home"}>Home</Link>
           <Link to={"/account"}>Account</Link>
           <Link to={"/cost"}>Cost Shipping</Link>
+          <Link to={"/income"}>Income</Link>
         </div>
         <div className="main">
           <div className="container1">
